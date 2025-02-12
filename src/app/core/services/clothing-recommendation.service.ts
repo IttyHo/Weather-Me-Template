@@ -9,14 +9,11 @@ import { lastValueFrom } from 'rxjs';
 export class ClothingRecommendationService {
     constructor(private http: HttpClient) { }
     number = 0;
-    delay(ms: number) {
-        return new Promise(resolve => setTimeout(resolve, ms));
-    }
 
     async getRecommendation(weather: any): Promise<string> {
         console.log('API Key:', environment.openaiApiKey);
 
-        const prompt = `בהתבסס על מזג אוויר של ${weather.temperature}°C ו-${weather.description}, מה כדאי ללבוש היום? תן תשובה קצרה של 2-3 משפטים.`;
+    const prompt = `Given the temperature of ${weather.temperature}°C and weather conditions: ${weather.description}, what clothes should I wear today? Give a brief recommendation.`;
 
         try {
             const response = await lastValueFrom(
