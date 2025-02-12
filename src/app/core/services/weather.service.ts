@@ -1,36 +1,84 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
-import { CurrentWeather } from 'src/app/shared/models/currentWeather.model';
-import { Forecast } from 'src/app/shared/models/forecast.model';
-import { environment } from 'src/environments/environment';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
+import { Observable, tap } from 'rxjs';
+import { TemperatureService } from './temperature.service';
+
+
+interface WeatherData {
+  date: Date;
+  temperature: number;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class WeatherService {
-  isMetric = true;
+  private weatherApiKey = environment.apiKey;
+  private baseApiUrl = '/api';
 
-  temperatureUnitChanged = new Subject<null>();
+  constructor(private http: HttpClient,
+    private tempertureService:TemperatureService
+  ) { }
 
-  constructor(private httpClient: HttpClient) {}
-
-  getForecast(locationKey: string): Observable<Forecast> {
-    const isMetric = this.isMetric ? 'true' : 'false';
-
-    let params: HttpParams = new HttpParams();
-    params = params.append('apikey', environment.apiKey);
-    params = params.append('metric', isMetric);
-
-    return this.httpClient.get<Forecast>(`http://dataservice.accuweather.com/forecasts/v1/daily/5day/${locationKey}`, { params });
+  getWeather(): Observable<WeatherData> {
+    return this.http.get<WeatherData>(this.baseApiUrl);
   }
 
-  getCurrentWeather(locationKey: string): Observable<CurrentWeather> {
-    let params: HttpParams = new HttpParams();
-    params = params.append('apikey', environment.apiKey);
-
-    return this.httpClient.get<CurrentWeather>(`http://dataservice.accuweather.com/currentconditions/v1/${locationKey}`, { params });
+  searchLocation(query: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseApiUrl}/locations/v1/cities/autocomplete`, {
+      params: {
+        apikey: this.weatherApiKey,
+        q: query,
+        language: 'EN'
+      }
+    }).pipe(
+      tap(response => console.log('Search response:', response))
+    );
   }
 
+  async getWeatherData(locationKey: string): Promise<any> {
+    debugger;
+    const currentUrl = `${this.baseApiUrl}/currentconditions/v1/${locationKey}`;
+    const forecastUrl = `${this.baseApiUrl}/forecasts/v1/daily/5day/${locationKey}`;
 
+    const params = {
+      apikey: this.weatherApiKey,
+      language: 'en-us',
+
+      details:'true'
+    };
+
+    try {
+      const [current, forecast] = await Promise.all([
+        this.http.get(currentUrl, { params }).toPromise(),
+        this.http.get(forecastUrl, { params }).toPromise()
+      ]);
+      return { current, forecast };
+    } catch (error) {
+      console.error('שגיאה בקבלת נתוני מזג אוויר:', error);
+      throw error;
+    }
+  }
+
+  getWeatherForCity(cityKey: string): Observable<any> {
+    return this.http.get(`${this.baseApiUrl}/currentconditions/v1/${cityKey}`, {
+      params: {
+        apikey: this.weatherApiKey,
+        language: 'EN',
+        details: 'true'
+      }
+    });
+  }
+
+  getForecast(cityKey: string): Observable<any> {
+    return this.http.get(`${this.baseApiUrl}/forecasts/v1/daily/5day/${cityKey}`, {
+      params: {
+        apikey: this.weatherApiKey,
+        language: 'EN',
+        metric: this.tempertureService.isCelsius.getValue(),
+        // details:'true'
+      }
+    });
+  }
 }

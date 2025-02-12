@@ -4,7 +4,11 @@ import { SearchPage } from './pages/search/search.page';
 import { WeatherRoutingModule } from './weather-routing.module';
 
 @NgModule({
-  declarations: [SearchPage],
-  imports: [CommonModule, WeatherRoutingModule],
+  declarations: [],
+  imports: [
+    CommonModule, 
+    WeatherRoutingModule,
+    SearchPage
+  ],
 })
 export class WeatherModule {}

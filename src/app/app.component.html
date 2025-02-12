@@ -1,11 +1,14 @@
 <div id="app-wrapper">
-  <div id="loader"><mat-progress-bar *ngIf="displayLoading" mode="indeterminate"></mat-progress-bar></div>
+  <div id="loader">
+    <mat-progress-bar *ngIf="displayLoading" mode="indeterminate">
+    </mat-progress-bar>
+  </div>
 
   <div id="sidenav-container">
     <h1>WeatherMe</h1>
 
     <div class="link-wrapper">
-      <mat-icon svgIcon="SEARCH"></mat-icon>
+      <mat-icon>search</mat-icon>
       <p routerLink="/search">Search</p>
     </div>
 
@@ -18,5 +21,6 @@
 
   <div id="content-wrapper">
     <router-outlet></router-outlet>
+    <!-- <app-weather></app-weather> -->
   </div>
 </div>

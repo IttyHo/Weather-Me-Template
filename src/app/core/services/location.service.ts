@@ -9,19 +9,23 @@ import { environment } from 'src/environments/environment';
 })
 export class LocationService {
   constructor(private httpClient: HttpClient) {}
+  private baseApiUrl = '/api';
+  cityKey:any;
 
   getAutocompleteLocation(searchText: string): Observable<Location[]> {
     let params: HttpParams = new HttpParams();
     params = params.append('apikey', environment.apiKey);
     params = params.append('q', searchText);
     
-    return this.httpClient.get<Location[]>('http://dataservice.accuweather.com/locations/v1/cities/autocomplete', { params });
+    return this.httpClient.get<Location[]>(`${this.baseApiUrl}/locations/v1/cities/autocomplete`,
+       { params });
   }
 
   getLocationByKey(locationKey: string): Observable<Location> {
     let params: HttpParams = new HttpParams();
     params = params.append('apikey', environment.apiKey);
 
-    return this.httpClient.get<Location>(`http://dataservice.accuweather.com/locations/v1/${locationKey}`, { params });
+    return this.httpClient.get<Location>(`${this.baseApiUrl}/locations/v1/${locationKey}`, 
+      { params });
   }
 }

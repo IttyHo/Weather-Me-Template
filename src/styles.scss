@@ -1,11 +1,57 @@
-/* You can add global styles to this file, and also import other style files */
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+// @use '@angular/material' as mat;
 
-mat-progress-bar .mat-progress-bar-buffer {
-    background: rgb(184, 184, 184);
-}
+// /* You can add global styles to this file, and also import other style files */
+// html, body { 
+//   height: 100%; 
+//   margin: 0;
+// }
+
+// body { 
+//   font-family: Roboto, "Helvetica Neue", sans-serif; 
+// }
+
+// // הגדרת ערכת נושא בסיסית
+// @include mat.core();
+
+// $my-primary: mat.define-palette(mat.$indigo-palette);
+// $my-accent: mat.define-palette(mat.$pink-palette);
+
+// $my-theme: mat.define-light-theme((
+//  color: (
+//    primary: $my-primary,
+//    accent: $my-accent,
+//  ),
+//  typography: mat.define-typography-config(),
+//  density: 0,
+// ));
+
+// @include mat.all-component-themes($my-theme);
+
+// // // Light theme
+// // $light-primary: mat.define-palette(mat.$indigo-palette);
+// // $light-accent: mat.define-palette(mat.$pink-palette);
+// // $light-theme: mat.define-light-theme((
+// //   color: (
+// //     primary: $light-primary,
+// //     accent: $light-accent,
+// //   )
+// // ));
+
+// // // Dark theme
+// // $dark-primary: mat.define-palette(mat.$blue-grey-palette);
+// // $dark-accent: mat.define-palette(mat.$amber-palette);
+// // $dark-theme: mat.define-dark-theme((
+// //   color: (
+// //     primary: $dark-primary,
+// //     accent: $dark-accent,
+// //   )
+// // ));
+
+// // @include mat.all-component-themes($light-theme);
+
+// // .dark-theme {
+// //   @include mat.all-component-colors($dark-theme);
   
-mat-progress-bar .mat-progress-bar-fill::after {
-    background: #8fbd11;
-}
+// //   background-color: #303030;
+// //   color: white;
+// // }

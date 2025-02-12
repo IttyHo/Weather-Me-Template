@@ -1,0 +1,20 @@
+{
+  "/api": {
+    "target": "https://dataservice.accuweather.com",
+    "secure": true,
+    "changeOrigin": true,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/api": ""
+    }
+  },
+  "/openai": {
+    "target": "https://api.openai.com",
+    "secure": true,
+    "changeOrigin": true,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/openai": ""
+    }
+  }
+}

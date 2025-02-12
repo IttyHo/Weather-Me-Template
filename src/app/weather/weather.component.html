@@ -3,20 +3,21 @@
     <mat-form-field appearance="outline" class="search-field">
       <mat-label>חפש עיר</mat-label>
       <input matInput
-             [formControl]="searchControl"
+             type="text"
              [matAutocomplete]="auto"
-             placeholder="הקלד שם עיר באנגלית">
+             (input)="searchLocation($event.target.value)">
       <mat-autocomplete #auto="matAutocomplete">
         <mat-option *ngFor="let result of searchResults"
-                   [value]="result.LocalizedName"
-                   (click)="onCitySelect(result)">
-          {{result.LocalizedName}}, {{result.Country.LocalizedName}}
+                   [value]="result.name"
+                   (click)="getWeatherForCity(result.name)">
+          {{result.name}}
         </mat-option>
       </mat-autocomplete>
     </mat-form-field>
   </mat-card>
 
   <div class="weather-content" *ngIf="currentWeather">
+    <!-- תצוגת מזג אוויר נוכחי -->
     <mat-card class="current-weather">
       <mat-card-header>
         <mat-card-title>{{currentWeather.city}}</mat-card-title>
@@ -30,13 +31,12 @@
       </mat-card-content>
     </mat-card>
 
+    <!-- תחזית ל-5 ימים -->
     <div class="forecast-container">
       <mat-card *ngFor="let day of forecast" class="forecast-card">
         <mat-card-content>
-          <div *ngIf="day">
-            <div class="date">{{day?.date | date}}</div>
-            <div class="temperature">{{day?.temperature}}°C</div>
-          </div>
+          <div class="date">{{day.date | date}}</div>
+          <div class="temperature">{{day.temperature}}°C</div>
           <div class="description">{{day.description}}</div>
         </mat-card-content>
       </mat-card>
