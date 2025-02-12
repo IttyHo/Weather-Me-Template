@@ -1,11 +1,12 @@
 <div class="weather-container">
   <mat-card class="search-card">
     <mat-form-field appearance="outline" class="search-field">
-      <mat-label>חפש עיר</mat-label>
+      <mat-label>search city</mat-label>
       <input matInput
              [formControl]="searchControl"
              [matAutocomplete]="auto"
-             placeholder="הקלד שם עיר באנגלית">
+             pattern="[A-Za-z\s]*" 
+             placeholder="Type in English">
       <mat-autocomplete #auto="matAutocomplete">
         <mat-option *ngFor="let result of searchResults"
                    [value]="result.LocalizedName"

@@ -8,7 +8,7 @@ export const environment = {
   // apiKey:'4IWjH4U80bB9VwjAEgsGyzRAwjh8kkVP',
   // apiKey:'JWlxaD7CpsvhapnH4dgtLrmhBwyZzlHY',
   // weatherApiKey: 'YOUR_ACCUWEATHER_API_KEY',
-  openaiApiKey: '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'
+  openaiApiKey: 'sk-proj_AxJKhdAikgnH1COT6gIquymY'//'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'
 };
 
 /*
