@@ -20,6 +20,7 @@ export class LocationService {
     return this.http.get<Location[]>(`${this.baseApiUrl}/locations/v1/cities/autocomplete`,
       { params });
   }
+  
 
   getLocationByKey(locationKey: string): Observable<Location> {
     let params: HttpParams = new HttpParams();
