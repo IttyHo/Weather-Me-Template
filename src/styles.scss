@@ -1,59 +1,39 @@
 // @use '@angular/material' as mat;
+// @use 'sass:map';
 
-// /* You can add global styles to this file, and also import other style files */
-// html, body { 
-//   height: 100%; 
-//   margin: 0;
-// }
-
-// body { 
-//   font-family: Roboto, "Helvetica Neue", sans-serif; 
-// }
-
-// // הגדרת ערכת נושא בסיסית
+// // Include core Material styles
 // @include mat.core();
 
-// // ערכת נושא ראשית (Light)
-// $my-primary: mat.define-palette(mat.$indigo-palette);
-// $my-accent: mat.define-palette(mat.$pink-palette);
-
-// $my-theme: mat.define-light-theme((
-//  color: (
-//    primary: $my-primary,
-//    accent: $my-accent,
-//  ),
-//  typography: mat.define-typography-config(),
-//  density: 0
-// ));
-
-// @include mat.all-component-themes($my-theme);
-
-// // ערכת נושא בהירה (Light Theme)
+// // Define palettes
 // $light-primary: mat.define-palette(mat.$indigo-palette);
 // $light-accent: mat.define-palette(mat.$pink-palette);
+// $light-warn: mat.define-palette(mat.$red-palette);
+
+// $dark-primary: mat.define-palette(mat.$blue-grey-palette);
+// $dark-accent: mat.define-palette(mat.$amber-palette);
+// $dark-warn: mat.define-palette(mat.$red-palette);
+
+// // Create themes
 // $light-theme: mat.define-light-theme((
 //   color: (
 //     primary: $light-primary,
 //     accent: $light-accent,
+//     warn: $light-warn,
 //   )
 // ));
 
-// // ערכת נושא כהה (Dark Theme)
-// $dark-primary: mat.define-palette(mat.$blue-grey-palette);
-// $dark-accent: mat.define-palette(mat.$amber-palette);
 // $dark-theme: mat.define-dark-theme((
 //   color: (
 //     primary: $dark-primary,
 //     accent: $dark-accent,
+//     warn: $dark-warn,
 //   )
 // ));
 
+// // Apply the light theme by default
 // @include mat.all-component-themes($light-theme);
 
-// // תמיכה בערכת נושא כהה
+// // Apply dark theme class
 // .dark-theme {
-//   @include mat.all-component-colors($dark-theme);
-  
-//   background-color: #303030;
-//   color: white;
+//   @include mat.all-component-themes($dark-theme);
 // }

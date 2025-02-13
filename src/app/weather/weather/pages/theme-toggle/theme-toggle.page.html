@@ -1,0 +1,6 @@
+
+
+  <div class="page-container">
+    <button mat-icon-button (click)="toggleTheme()" [matTooltip]="(isDark$ | async) ? 'Switch to Light Mode' : 'Switch to Dark Mode'">
+        <mat-icon>{{ (isDark$ | async) ? 'light_mode' : 'dark_mode' }}</mat-icon>
+      </button>  </div>

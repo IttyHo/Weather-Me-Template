@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { lastValueFrom } from 'rxjs';
@@ -7,8 +7,7 @@ import { lastValueFrom } from 'rxjs';
     providedIn: 'root'
 })
 export class ClothingRecommendationService {
-    constructor(private http: HttpClient) { }
-    number = 0;
+    readonly http=inject(HttpClient)
 
     async getRecommendation(weather: any): Promise<string> {
         console.log('API Key:', environment.openaiApiKey);
@@ -28,6 +27,7 @@ export class ClothingRecommendationService {
                     }
                 })
             );
+console.log(response);
 
             return response['choices'][0]['message']['content'];
         } catch (error) {

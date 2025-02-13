@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-import { Observable, tap } from 'rxjs';
+import { lastValueFrom, Observable, tap } from 'rxjs';
 import { TemperatureService } from './temperature.service';
 
 
@@ -17,9 +17,9 @@ export class WeatherService {
   private weatherApiKey = environment.apiKey;
   private baseApiUrl = '/api';
 
-  constructor(private http: HttpClient,
-    private tempertureService:TemperatureService
-  ) { }
+  readonly http = inject(HttpClient)
+  readonly tempertureService = inject(TemperatureService)
+
 
   getWeather(): Observable<WeatherData> {
     return this.http.get<WeatherData>(this.baseApiUrl);
@@ -46,14 +46,16 @@ export class WeatherService {
       apikey: this.weatherApiKey,
       language: 'en-us',
 
-      details:'true'
+      details: 'true'
     };
 
     try {
+
       const [current, forecast] = await Promise.all([
-        this.http.get(currentUrl, { params }).toPromise(),
-        this.http.get(forecastUrl, { params }).toPromise()
+        lastValueFrom(this.http.get(currentUrl, { params })),
+        lastValueFrom(this.http.get(forecastUrl, { params }))
       ]);
+
       return { current, forecast };
     } catch (error) {
       console.error('שגיאה בקבלת נתוני מזג אוויר:', error);

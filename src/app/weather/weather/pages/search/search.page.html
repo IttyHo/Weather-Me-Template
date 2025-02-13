@@ -1,4 +1,4 @@
-<div class="weather-container">
+<div  [class.dark-theme]="isDark$ | async" class="weather-container">
   <mat-card class="search-card">
     <mat-form-field appearance="outline" class="search-field">
       <mat-label>search city</mat-label>
@@ -7,6 +7,7 @@
              [matAutocomplete]="auto"
              pattern="[A-Za-z\s]*" 
              placeholder="Type in English">
+             <mat-error *ngIf="searchControl.hasError('pattern')">City name must contain only English letters.</mat-error>
       <mat-autocomplete #auto="matAutocomplete">
         <mat-option *ngFor="let result of searchResults"
                    [value]="result.LocalizedName"
@@ -26,7 +27,11 @@
         </button>
       </mat-card-header>
       <mat-card-content>
-        <div class="temperature">{{currentWeather.temperature}}°C</div>
+        <button mat-icon-button matTooltip="{{ clothingRecommendation }}" aria-label="המלצת לבוש">
+          <mat-icon>checkroom</mat-icon>
+        </button>
+        
+        <div class="temperature">{{temperatureService.isCelsius.getValue() ? currentWeather?.temperature:celsiusToFahrenheit(currentWeather?.temperature)| number:'1.0-0'  }}°{{ temperatureService.isCelsius.getValue() ? 'C' : 'F' }}</div>
         <div class="description">{{currentWeather.description}}</div>
       </mat-card-content>
     </mat-card>
@@ -36,7 +41,7 @@
         <mat-card-content>
           <div *ngIf="day">
             <div class="date">{{day?.date | date}}</div>
-            <div class="temperature">{{day?.temperature}}°C</div>
+            <div class="temperature">{{temperatureService.isCelsius.getValue() ? day?.temperature:celsiusToFahrenheit(day?.temperature)| number:'1.0-0'  }}°{{ temperatureService.isCelsius.getValue() ? 'C' : 'F' }}</div>
           </div>
           <div class="description">{{day.description}}</div>
         </mat-card-content>

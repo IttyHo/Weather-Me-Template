@@ -1,23 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { WeatherService } from '../../../../core/services/weather.service';
 import { ThemeService } from '../../../../core/services/theme.service';
 import { TemperatureService } from '../../../../core/services/temperature.service';
 import { ClothingRecommendationService } from '../../../../core/services/clothing-recommendation.service';
-import { FormControl } from '@angular/forms';
-import { debounceTime, distinctUntilChanged, filter, switchMap } from 'rxjs/operators';
+import { FormControl, Validators } from '@angular/forms';
+import { debounceTime, distinctUntilChanged, filter, switchMap, tap } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { LocationService } from 'src/app/core/services/location.service';
+import { lastValueFrom } from 'rxjs';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatFormFieldModule, MatLabel } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { HttpClient } from '@angular/common/http';
-import { LocationService } from 'src/app/core/services/location.service';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-search',
@@ -32,9 +33,8 @@ import { LocationService } from 'src/app/core/services/location.service';
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
-    MatSnackBarModule,
-    MatProgressBarModule,
-    MatSlideToggleModule,
+    MatLabel,
+    MatTooltipModule,
   ],
   standalone: true,
 })
@@ -45,20 +45,23 @@ export class SearchPage implements OnInit {
   favorites: string[] = [];
   isLoading = false;
   clothingRecommendation: string;
+
+  searchControl = new FormControl('', [Validators.pattern('^[a-zA-Z ]*$')]);
+
+  readonly weatherService = inject(WeatherService)
+  readonly snackBar = inject(MatSnackBar)
+  readonly themeService = inject(ThemeService)
+  readonly locationService = inject(LocationService)
+  readonly temperatureService = inject(TemperatureService)
+  readonly clothingService = inject(ClothingRecommendationService)
+
+  isDark$ = this.themeService.isDarkTheme$;
   isDarkTheme$ = this.themeService.isDarkTheme$;
   isCelsius$ = this.temperatureService.isCelsius$;
-  searchControl = new FormControl('');
-  
-  constructor(
-    private weatherService: WeatherService,
-    private snackBar: MatSnackBar,
-    private themeService: ThemeService,
-    private locationService:LocationService,
-    private temperatureService: TemperatureService,
-    private clothingService: ClothingRecommendationService
-  ) {}
-
   ngOnInit() {
+    this.isDark$.pipe(
+      tap(ans => console.log(ans))
+    ).subscribe()
     this.loadFavorites();
     this.weatherService.searchLocation('Tel Aviv').subscribe({
       next: (results) => {
@@ -79,7 +82,7 @@ export class SearchPage implements OnInit {
         this.showError('שגיאה בטעינת מזג האוויר');
       }
     });
-    
+
     this.searchControl.valueChanges.pipe(
       debounceTime(300),
       distinctUntilChanged(),
@@ -95,6 +98,10 @@ export class SearchPage implements OnInit {
     });
   }
 
+  celsiusToFahrenheit(celsius: number): number {
+    return (celsius * 9 / 5) + 32;
+  }
+
   private showError(message: string) {
     this.snackBar.open(message, 'סגור', {
       duration: 3000,
@@ -106,8 +113,8 @@ export class SearchPage implements OnInit {
   async getWeatherForCity(cityKey: string) {
     try {
       const [current, forecast] = await Promise.all([
-        this.weatherService.getWeatherForCity(cityKey).toPromise(),
-        this.weatherService.getForecast(cityKey).toPromise()
+        lastValueFrom(this.weatherService.getWeatherForCity(cityKey)),
+        lastValueFrom(this.weatherService.getForecast(cityKey))
       ]);
 
       this.currentWeather = {
@@ -125,7 +132,6 @@ export class SearchPage implements OnInit {
       if (this.currentWeather) {
         this.clothingRecommendation = await this.clothingService
           .getRecommendation(this.currentWeather);
-          await this.delay(5000); 
 
       }
     } catch (error) {
@@ -133,9 +139,6 @@ export class SearchPage implements OnInit {
     }
   }
 
-   delay(ms: number) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
 
   isFavorite(city: string): boolean {
     return this.favorites.includes(city);
@@ -157,7 +160,7 @@ export class SearchPage implements OnInit {
     }
   }
   onCitySelect(result: any) {
-    this.locationService.cityKey=result.Key
+    this.locationService.cityKey = result.Key
     if (result && result.Key) {
       this.getWeatherForCity(result.Key);
     }

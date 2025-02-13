@@ -9,7 +9,6 @@ export class TemperatureService {
   isCelsius$ = this.isCelsius.asObservable();
 
   convertTemperature(temp: number, toCelsius: boolean): number {
-    alert(toCelsius)
     if (toCelsius) {
       return (temp - 32) * 5/9;
     }
@@ -21,6 +20,5 @@ export class TemperatureService {
     
     this.isCelsius.next(!this.isCelsius.value);
    let temp=await this.convertTemperature(58,this.isCelsius.value)
-//    alert(temp)
   }
 } 
