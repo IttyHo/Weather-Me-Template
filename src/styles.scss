@@ -6,8 +6,10 @@ body[data-theme='dark'] {
      .mat-mdc-input-element {
         background-color: #121212 !important;
         color: #fff;      }
-      
-    .weather-container,.input, mat-input,mat-label,mat-icon,mat-form-control.cdk-overlay-pane,mat-option{
+      input{
+        color: #fff !important;
+      }
+    .weather-container,  mat-input,mat-label,mat-icon,mat-form-control.cdk-overlay-pane,mat-option{
         background-color: #121212 !important;
         color: #fff;
 
