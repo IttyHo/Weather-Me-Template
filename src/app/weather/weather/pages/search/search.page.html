@@ -1,17 +1,12 @@
-<div  [class.dark-theme]="isDark$ | async" class="weather-container">
+<div class="weather-container">
   <mat-card class="search-card">
     <mat-form-field appearance="outline" class="search-field">
       <mat-label>search city</mat-label>
-      <input matInput
-             [formControl]="searchControl"
-             [matAutocomplete]="auto"
-             pattern="[A-Za-z\s]*" 
-             placeholder="Type in English">
-             <mat-error *ngIf="searchControl.hasError('pattern')">City name must contain only English letters.</mat-error>
+      <input class="input" matInput [formControl]="searchControl" [matAutocomplete]="auto" pattern="[A-Za-z\s]*"
+        placeholder="Type in English" (keydown)="onKeydown($event)">
+      <mat-error *ngIf="searchControl.hasError('pattern')">City name must contain only English letters.</mat-error>
       <mat-autocomplete #auto="matAutocomplete">
-        <mat-option *ngFor="let result of searchResults"
-                   [value]="result.LocalizedName"
-                   (click)="onCitySelect(result)">
+        <mat-option *ngFor="let result of searchResults" [value]="result.LocalizedName" (click)="onCitySelect(result)">
           {{result.LocalizedName}}, {{result.Country.LocalizedName}}
         </mat-option>
       </mat-autocomplete>
@@ -27,11 +22,12 @@
         </button>
       </mat-card-header>
       <mat-card-content>
-        <button mat-icon-button matTooltip="{{ clothingRecommendation }}" aria-label="המלצת לבוש">
+        <button mat-icon-button matTooltip="{{ clothingRecommendation }}" aria-label="Clothing recommendation">
           <mat-icon>checkroom</mat-icon>
         </button>
-        
-        <div class="temperature">{{temperatureService.isCelsius.getValue() ? currentWeather?.temperature:celsiusToFahrenheit(currentWeather?.temperature)| number:'1.0-0'  }}°{{ temperatureService.isCelsius.getValue() ? 'C' : 'F' }}</div>
+
+        <div class="temperature">{{ isCelsius ? currentWeather?.temperature :
+          celsiusToFahrenheit(currentWeather?.temperature) | number:'1.0-0' }}°{{ isCelsius ? 'C' : 'F' }}</div>
         <div class="description">{{currentWeather.description}}</div>
       </mat-card-content>
     </mat-card>
@@ -41,7 +37,8 @@
         <mat-card-content>
           <div *ngIf="day">
             <div class="date">{{day?.date | date}}</div>
-            <div class="temperature">{{temperatureService.isCelsius.getValue() ? day?.temperature:celsiusToFahrenheit(day?.temperature)| number:'1.0-0'  }}°{{ temperatureService.isCelsius.getValue() ? 'C' : 'F' }}</div>
+            <div class="temperature">{{ isCelsius ? day?.temperature : celsiusToFahrenheit(day?.temperature) |
+              number:'1.0-0' }}°{{ isCelsius ? 'C' : 'F' }}</div>
           </div>
           <div class="description">{{day.description}}</div>
         </mat-card-content>

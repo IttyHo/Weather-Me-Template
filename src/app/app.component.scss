@@ -11,7 +11,7 @@
     #sidenav-container {
         width: 200px;
         padding: 20px;
-        background: linear-gradient(to bottom, #1eaf67 0%, #87e48c 89%);
+        background: linear-gradient(to bottom, #40af1e 0%, #87e48c 89%);
 
         h1 {
             color: #ffffff;
@@ -46,9 +46,8 @@
 
     }
 
-    #content-wrapper {
+    .content-wrapper {
         margin: 20px;
-        background-color: #f7f2f2;
         border-radius: 10px;
         width: 100%;
     }

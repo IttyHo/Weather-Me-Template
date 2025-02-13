@@ -31,8 +31,8 @@ console.log(response);
 
             return response['choices'][0]['message']['content'];
         } catch (error) {
-            console.error('שגיאה בקבלת המלצות לבוש:', error);
-            return 'לא ניתן לקבל המלצות לבוש כרגע.';
+            console.error('Error retrieving clothing recommendations', error);
+            return 'Clothing recommendations are currently unavailable.';
         }
     }
 }

@@ -22,8 +22,19 @@ import { ThemeService } from 'src/app/core/services/theme.service';
 export class ThemeTogglePage {
 
   readonly themeService = inject(ThemeService)
-  isDark$ = this.themeService.isDarkTheme$;
+
+  get isDark(): boolean {
+    return this.themeService.isDarkTheme(); 
+  }
+  
   toggleTheme() {
+    console.log((this.isDark));
+    
+    const currentTheme = document.body.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    document.body.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);  
     this.themeService.toggleTheme();
+
   }
 }

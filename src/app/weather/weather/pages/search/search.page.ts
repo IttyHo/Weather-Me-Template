@@ -55,13 +55,10 @@ export class SearchPage implements OnInit {
   readonly temperatureService = inject(TemperatureService)
   readonly clothingService = inject(ClothingRecommendationService)
 
-  isDark$ = this.themeService.isDarkTheme$;
-  isDarkTheme$ = this.themeService.isDarkTheme$;
-  isCelsius$ = this.temperatureService.isCelsius$;
+  get isCelsius() {
+    return this.temperatureService.isCelsiusSignal();
+  }
   ngOnInit() {
-    this.isDark$.pipe(
-      tap(ans => console.log(ans))
-    ).subscribe()
     this.loadFavorites();
     this.weatherService.searchLocation('Tel Aviv').subscribe({
       next: (results) => {
@@ -71,15 +68,15 @@ export class SearchPage implements OnInit {
             this.getWeatherForCity(firstResult.Key);
             this.searchControl.setValue(firstResult.LocalizedName || 'Tel Aviv', { emitEvent: false });
           } else {
-            this.showError('לא נמצאו תוצאות עבור תל אביב');
+            this.showError('No results found for Tel Aviv.');
           }
         } else {
-          this.showError('לא נמצאו תוצאות עבור תל אביב');
+          this.showError('No results found for Tel Aviv.');
         }
       },
       error: (error) => {
-        console.error('שגיאה בחיפוש תל אביב:', error);
-        this.showError('שגיאה בטעינת מזג האוויר');
+        console.error('Error searching for Tel Aviv:', error);
+        this.showError('Error loading weather data.');
       }
     });
 
@@ -93,7 +90,7 @@ export class SearchPage implements OnInit {
         this.searchResults = results;
       },
       error: (error) => {
-        this.showError('שגיאה בחיפוש המיקום');
+        this.showError('Error searching for location.');
       }
     });
   }
@@ -103,7 +100,7 @@ export class SearchPage implements OnInit {
   }
 
   private showError(message: string) {
-    this.snackBar.open(message, 'סגור', {
+    this.snackBar.open(message, 'close', {
       duration: 3000,
       horizontalPosition: 'center',
       verticalPosition: 'top',
@@ -135,7 +132,14 @@ export class SearchPage implements OnInit {
 
       }
     } catch (error) {
-      this.showError('שגיאה בטעינת מזג האוויר');
+      this.showError('Error loading weather.');
+    }
+  }
+
+  onKeydown(event: KeyboardEvent) {
+    const { key } = event;
+    if (!/^[A-Za-z\s\-]$/.test(key) && key !== 'Backspace' && key !== 'Delete') {
+      event.preventDefault();
     }
   }
 
@@ -166,4 +170,5 @@ export class SearchPage implements OnInit {
     }
   }
 }
+
 

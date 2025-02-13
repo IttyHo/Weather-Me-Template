@@ -58,7 +58,7 @@ export class WeatherService {
 
       return { current, forecast };
     } catch (error) {
-      console.error('שגיאה בקבלת נתוני מזג אוויר:', error);
+      console.error('Error retrieving weather data:', error);
       throw error;
     }
   }
@@ -72,14 +72,17 @@ export class WeatherService {
       }
     });
   }
+  get isCelsius() {
+    return this.tempertureService.isCelsiusSignal();
+  }
+
 
   getForecast(cityKey: string): Observable<any> {
     return this.http.get(`${this.baseApiUrl}/forecasts/v1/daily/5day/${cityKey}`, {
       params: {
         apikey: this.weatherApiKey,
         language: 'EN',
-        metric: this.tempertureService.isCelsius.getValue(),
-        // details:'true'
+        metric: true
       }
     });
   }

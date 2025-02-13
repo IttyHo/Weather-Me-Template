@@ -4,10 +4,8 @@
 
 export const environment = {
   production: false,
-  // apiKey: 'RZr95L4j0RlOIta6tbuIsAkooy1Ybrce',
-  // apiKey:'4IWjH4U80bB9VwjAEgsGyzRAwjh8kkVP',
-  apiKey:'HkOvd29OlZojUBhDI9hdkcuA1JbtpO2N',
-  openaiApiKey: ''
+  apiKey: 'RZr95L4j0RlOIta6tbuIsAkooy1Ybrce',
+  openaiApiKey: 'PUT HERE YOUR OPENAI API KEY'
 };
 
 /*

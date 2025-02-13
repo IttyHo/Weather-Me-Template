@@ -1,17 +1,23 @@
-// .weather-container {
-//     transition: all 0.3s ease;
-    
-//     &.dark-theme {
-//       background-color: var(--primary-bg) !important;
-//       color: var(--primary-text) !important;
+.weather-container {
+    transition: all 0.3s ease;
+ .search-card{
+    height: 56px;
+    border-radius: 4px;
+ }
+    mat-card{
+        margin: 10px;
+    }
+    &.dark-theme {
+      background-color: var(--primary-bg) !important;
+      color: var(--primary-text) !important;
       
-//       .weather-card {
-//         background-color: var(--card-bg);
-//       }
+      .weather-card {
+        background-color: var(--card-bg);
+      }
       
-//       .weather-details {
-//         background-color: var(--secondary-bg);
-//       }
-//     }
-//   }
+      .weather-details {
+        background-color: var(--secondary-bg);
+      }
+    }
+  }
   

@@ -6,12 +6,8 @@
 
   <div id="sidenav-container">
     <h1>WeatherMe</h1>
-
-    <div class="link-wrapper">
-      <mat-icon>search</mat-icon>
-      <p routerLink="/search">Search</p>
-    </div>
-    <app-theme-toggle>
+    
+ <app-theme-toggle>
     </app-theme-toggle>
 
     <mat-slide-toggle id="slide-toggle" (click)="changeTemperatureUnit()">
@@ -21,7 +17,7 @@
     </mat-slide-toggle>
   </div>
 
-  <div id="content-wrapper">
+  <div class="content-wrapper">
     <router-outlet></router-outlet>
   </div>
 </div>
